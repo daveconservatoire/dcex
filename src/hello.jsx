@@ -1,10 +1,80 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-export const Hello = React.createClass({
+const ProgressBar = React.createClass({
+  propTypes: {
+    value: React.PropTypes.number.isRequired,
+    max: React.PropTypes.number.isRequired
+  },
+
   render() {
-    return <div>Hello World</div>;
+    const {value, max} = this.props;
+
+    return (
+      <div>Progress {value} / {max}</div>
+    );
   }
 });
 
-ReactDOM.render(<Hello />, document.getElementById('app-container'));
+const Exercice = React.createClass({
+  getInitialState() {
+    return {
+      started: true
+    }
+  },
+
+  start() {
+    this.setState({started: true});
+  },
+
+  renderExercice() {
+    return (
+      <div>
+        <div><ProgressBar value={10} max={100} /></div>
+        <div>
+          <div>
+            <div>You will hear two notes. Is the second note lower or higher in pitch?</div>
+            <button type="button">Play Again</button>
+          </div>
+          <div>
+            <form>
+              <h3>Answer</h3>
+              <div>
+                <label>
+                  <input type="radio" name="solution" value="0" />
+                  Lower
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input type="radio" name="solution" value="1" />
+                  Higher
+                </label>
+              </div>
+              <button type="button">Check Answer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  renderStart() {
+    return <button type="button" onClick={this.start}>Start Now</button>;
+  },
+
+  render() {
+    return (
+      <div>
+        {this.state.started ? this.renderExercice() : this.renderStart()}
+      </div>
+    );
+  }
+});
+
+const Hello = React.createClass({
+  render() {
+    return <div><Exercice /></div>;
+  }
+});
+
+export { Hello as default };
