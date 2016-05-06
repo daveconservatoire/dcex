@@ -1,4 +1,5 @@
 import React from 'react';
+import Audio from './audio.jsx';
 
 const ProgressBar = React.createClass({
   propTypes: {
@@ -15,11 +16,29 @@ const ProgressBar = React.createClass({
   }
 });
 
-const Exercice = React.createClass({
+const PitchExercice = React.createClass({
+  propTypes: {
+    
+  },
+  
   getInitialState() {
+    const pitch = this.genPitch();
+    
     return {
-      started: true
+      started: true,
+      pitch: pitch,
+      pitchVariation: this.varPitch(pitch)
     }
+  },
+  
+  genPitch() {
+    const min = 80, max = 800;
+    
+    return min + Math.round(Math.random() * (max - min));
+  },
+  
+  varPitch(pitch) {
+    const delta = 100;
   },
 
   start() {
@@ -73,7 +92,7 @@ const Exercice = React.createClass({
 
 const Hello = React.createClass({
   render() {
-    return <div><Exercice /></div>;
+    return <div><PitchExercice /></div>;
   }
 });
 
