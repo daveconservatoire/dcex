@@ -1,33 +1,16 @@
-import Tone from 'tone';
-
-const instrument = new Tone.MonoSynth({
-  "volume" : 1,
-  "envelope" : {
-    "attack" : 0.1,
-    "decay" : 0.3,
-    "release" : 2
-  }
-}).toMaster();
+const T = window.T;
 
 const Audio = {
-  simpleSynth: new Tone.SimpleSynth().toMaster(),
-
   play(notes) {
+    var mml = "l2" + notes;
 
-    const self = this;
-    const seq = new Tone.Sequence(function(time, note) {
-      console.log("seq running", time, note);
-      self.simpleSynth.triggerAttackRelease(note, "6n", time);
-    }, notes, "4n");
+    var gen = T("OscGen", {wave:"sin(10)", env:{type:"adsr"}}).play();
 
-    console.log("sequence", seq);
-    seq.loop = false;
-    seq.start(0);
-
-    Tone.Transport.start(0);
+    T("mml", {mml:mml}, gen).on("ended", function() {
+      gen.pause();
+      this.stop();
+    }).start();
   }
 };
-
-window.DCAudio = Audio;
 
 export {Audio as default};

@@ -45,6 +45,10 @@ const PitchExercice = React.createClass({
     this.setState({started: true});
   },
 
+  playSound() {
+    Audio.play("c e g");
+  },
+
   renderExercice() {
     return (
       <div>
@@ -52,7 +56,7 @@ const PitchExercice = React.createClass({
         <div>
           <div>
             <div>You will hear two notes. Is the second note lower or higher in pitch?</div>
-            <button type="button">Play Again</button>
+            <button type="button" onClick={this.playSound}>Play Again</button>
           </div>
           <div>
             <form>
