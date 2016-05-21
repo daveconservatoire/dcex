@@ -14,7 +14,7 @@ const ProgressBar = React.createClass({
 
     return (
       <div style={{background: "#E9E6E1", borderRadius: 32, height: 23, overflow: "hidden"}}>
-        <div style={{width: pct + "%", height: "100%", background: "#19C1C3", transition: "all 2s"}}></div>
+        <div style={{width: pct + "%", height: "100%", background: "#19C1C3", transition: "all 1s"}}></div>
       </div>
     );
   }
