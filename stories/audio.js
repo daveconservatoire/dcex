@@ -24,7 +24,7 @@ const SequenceStory = React.createClass({
 
     try {
       const interval = parseFloat(s.interval);
-      const notes = s.notes.split(" ");
+      const notes = s.notes.split(" ").map(Audio.noteToSemitone).map(Audio.semitoneToNote);
 
       Audio.playRegularSequence(notes, interval);
     } catch (e) {

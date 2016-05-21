@@ -44,6 +44,10 @@ export default Audio = {
     return !!AudioContext;
   },
 
+  decodeBase64(data) {
+    return context.decodeAudioData(Base64Binary.decode(data.substr(22)).buffer);
+  },
+
   playNoteMidi(note, start) {
     const noteData = piano[note];
 
@@ -52,10 +56,16 @@ export default Audio = {
       return;
     }
 
-    context.decodeAudioData(Base64Binary.decode(noteData.substr(22)).buffer, function (buffer) {
+    this.decodeBase64(noteData).then(function (buffer) {
+      const gainNode = context.createGain();
+      gainNode.gain.value = 2;
+
       const sourceNode = context.createBufferSource();
       sourceNode.buffer = buffer;
-      sourceNode.connect(context.destination);
+
+      sourceNode.connect(gainNode);
+      gainNode.connect(context.destination);
+
       sourceNode.start(start);
     });
   },
