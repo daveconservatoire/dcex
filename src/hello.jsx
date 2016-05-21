@@ -73,7 +73,7 @@ const PitchExercice = React.createClass({
   getInitialState() {
     return {
       score: 0,
-      started: true,
+      started: false,
       solution: null,
       pitch: this.genPitch(),
       pitchVariation: this.varPitch()
@@ -90,6 +90,7 @@ const PitchExercice = React.createClass({
 
   start() {
     this.setState({started: true});
+    this.playSound();
   },
 
   playSound(e, s) {
