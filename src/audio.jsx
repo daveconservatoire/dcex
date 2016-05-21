@@ -81,6 +81,8 @@ export default Audio = {
   },
 
   noteToSemitone(note) {
+    if (_.isInteger(note)) return note;
+
     var parts;
 
     if (parts = note.match(/([A-G])([b#]?)(\d)/)) {

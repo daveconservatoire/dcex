@@ -23,10 +23,35 @@ function randRange(min, max) {
 }
 
 function valueFromDescriptor(descriptor) {
-  return _.isArray(descriptor) ? randRange(descriptor[0], descriptor[1]) : descriptor;
+  const nts = Audio.noteToSemitone;
+
+  return _.isArray(descriptor) ?
+    randRange(nts(descriptor[0]), nts(descriptor[1])) :
+    nts(descriptor);
 }
 
 const ValueDescriptor = React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.number]);
+
+const RadioState = React.createClass({
+  propTypes: {
+    name: React.PropTypes.string,
+    value: React.PropTypes.any,
+    target: React.PropTypes.object
+  },
+
+  updateState() {
+    const ns = {};
+    ns[this.props.name] = this.props.value;
+    this.props.target.setState(ns);
+  },
+
+  render() {
+    const p = this.props;
+    const targetValue = p.target.state[p.name];
+
+    return <input type="radio" name={p.name} value={p.value} onChange={this.updateState} checked={targetValue == p.value} />
+  }
+});
 
 const PitchExercice = React.createClass({
   propTypes: {
@@ -36,7 +61,7 @@ const PitchExercice = React.createClass({
 
   getDefaultProps() {
     return {
-      pitch: [27, 62],
+      pitch: ["C3", "B5"],
       variation: 24
     };
   },
@@ -117,13 +142,13 @@ const PitchExercice = React.createClass({
               <h3>Answer</h3>
               <div>
                 <label>
-                  <input type="radio" onChange={this.updateState('solution')} name="solution" value="0" checked={s.solution == '0'} />
+                  <RadioState name="solution" value="0" target={this} />
                   Lower
                 </label>
               </div>
               <div>
                 <label>
-                  <input type="radio" onChange={this.updateState('solution')} name="solution" value="1" checked={s.solution == '1'} />
+                  <RadioState name="solution" value="1" target={this} />
                   Higher
                 </label>
               </div>
