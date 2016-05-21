@@ -73,6 +73,7 @@ const PitchExercice = React.createClass({
   getInitialState() {
     return {
       score: 0,
+      maxScore: 3,
       started: false,
       solution: null,
       pitch: this.genPitch(),
@@ -102,6 +103,10 @@ const PitchExercice = React.createClass({
     Audio.playRegularSequence([note1, note2], 2);
   },
 
+  isCompleted(score) {
+    return score >= this.state.maxScore;
+  },
+
   checkAnswer() {
     const s = this.state;
     const correct = s.pitchVariation > 0 ? "1" : "0";
@@ -116,7 +121,10 @@ const PitchExercice = React.createClass({
       };
 
       this.setState(newState);
-      this.playSound(null, newState);
+
+      if (newScore != s.maxScore) {
+        this.playSound(null, newState);
+      }
     } else {
       this.setState({score: 0});
     }
@@ -136,7 +144,9 @@ const PitchExercice = React.createClass({
 
     return (
       <div style={{background: "#f7f7f7", width: 752, boxShadow: "0 1px 3px #cccccc", border: "1px solid #cccccc"}}>
-        <div style={{margin: 20}}><ProgressBar value={s.score} max={10} /></div>
+        <div style={{margin: 20}}>
+          {this.isCompleted(s.score) ? <div>Well done! You've mastered this skill - time to move on to something new!</div> : <ProgressBar value={s.score} max={s.maxScore} />}
+        </div>
         <div style={{marginTop: 30, display: "flex"}}>
           <div style={{flex: 1, height: 250, padding: "0 20px"}}>
             <div>You will hear two notes. Is the second note lower or higher in pitch?</div>
