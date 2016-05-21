@@ -46,7 +46,7 @@ const PitchExercice = React.createClass({
   },
 
   playSound() {
-    Audio.playRegularSequence(["C4", "D4", "C4", "G4"], 0.5);
+    Audio.playRegularSequence(["A0", "C0"], 0.5);
   },
 
   renderExercice() {
