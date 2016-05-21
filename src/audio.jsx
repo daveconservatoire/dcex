@@ -45,7 +45,14 @@ export default Audio = {
   },
 
   playNoteMidi(note, start) {
-    context.decodeAudioData(Base64Binary.decode(piano[note].substr(22)).buffer, function (buffer) {
+    const noteData = piano[note];
+
+    if (!noteData) {
+      console.warn("can't play note", note);
+      return;
+    }
+
+    context.decodeAudioData(Base64Binary.decode(noteData.substr(22)).buffer, function (buffer) {
       const sourceNode = context.createBufferSource();
       sourceNode.buffer = buffer;
       sourceNode.connect(context.destination);
@@ -65,11 +72,10 @@ export default Audio = {
 
   noteToSemitone(note) {
     var parts;
+
     if (parts = note.match(/([A-G])([b#]?)(\d)/)) {
       const tone = parts[1], accent = parts[2], octive = parseInt(parts[3]);
-      const res = octive * 12 - 9 + TONE_VALUES[tone] + ACCENT_VALUES[accent];
-
-      return res;
+      return octive * 12 - 9 + TONE_VALUES[tone] + ACCENT_VALUES[accent];
     }
     
     return null;
