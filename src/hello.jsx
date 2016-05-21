@@ -1,5 +1,6 @@
 import React from 'react';
 import Audio from './audio.jsx';
+import _ from 'lodash';
 
 const ProgressBar = React.createClass({
   propTypes: {
@@ -9,9 +10,12 @@ const ProgressBar = React.createClass({
 
   render() {
     const {value, max} = this.props;
+    const pct = value / max * 100;
 
     return (
-      <div>Progress {value} / {max}</div>
+      <div style={{background: "#E9E6E1", borderRadius: 32, height: 23, overflow: "hidden"}}>
+        <div style={{width: pct + "%", height: "100%", background: "#19C1C3", transition: "all 2s"}}></div>
+      </div>
     );
   }
 });
@@ -130,30 +134,32 @@ const PitchExercice = React.createClass({
     const s = this.state;
 
     return (
-      <div>
-        <div><ProgressBar value={s.score} max={10} /></div>
-        <div>
-          <div>
+      <div style={{background: "#f7f7f7", width: 752, boxShadow: "0 1px 3px #cccccc", border: "1px solid #cccccc"}}>
+        <div style={{margin: 20}}><ProgressBar value={s.score} max={10} /></div>
+        <div style={{marginTop: 30, display: "flex"}}>
+          <div style={{flex: 1, height: 250, padding: "0 20px"}}>
             <div>You will hear two notes. Is the second note lower or higher in pitch?</div>
             <button type="button" onClick={this.playSound}>Play Again</button>
           </div>
           <div>
-            <form>
-              <h3>Answer</h3>
-              <div>
-                <label>
-                  <RadioState name="solution" value="0" target={this} />
-                  Lower
-                </label>
-              </div>
-              <div>
-                <label>
-                  <RadioState name="solution" value="1" target={this} />
-                  Higher
-                </label>
-              </div>
-              <button type="button" onClick={this.checkAnswer}>Check Answer</button>
-            </form>
+            <div style={{background: "#eee", boxShadow: "0 1px 2px #ccc", border: "1px solid #ccc", padding: 10, marginRight: -15}}>
+              <form>
+                <h3 style={{margin: 0, marginBottom: 10, color: "#777", textShadow: "0 1px 0 #fff"}}>Answer</h3>
+                <div>
+                  <label>
+                    <RadioState name="solution" value="0" target={this} />
+                    Lower
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <RadioState name="solution" value="1" target={this} />
+                    Higher
+                  </label>
+                </div>
+                <button type="button" onClick={this.checkAnswer} style={{marginTop: 10}}>Check Answer</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
