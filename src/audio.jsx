@@ -6,29 +6,36 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const context = new AudioContext();
 
-// A = 0
-// B = 1
-// C = 2
-// D = 3
-// E = 4
-// F = 5
-// G = 6
+const TONE_VALUES = {
+  "C": 0,
+  "D": 2,
+  "E": 4,
+  "F": 5,
+  "G": 7,
+  "A": 9,
+  "B": 11
+};
 
-// A0 = 0
-// Bb0 = 1
-// B0 = 2
-// C1 = 3
-// Db1 = 4
-// D1 = 5
-// Eb1 = 6
-// E1 = 7
-// F1 = 8
-// Gb1 = 9
-// G1 = 10
-// Ab1 = 11
-// A1 = 12
-// Bb1 = 13
-// B1 = 14
+const ACCENT_VALUES = {
+  "b": -1,
+  "#": 1,
+  "": 0
+};
+
+const SEMITONE_NOTE = {
+  0: "C",
+  1: "Db",
+  2: "D",
+  3: "Eb",
+  4: "E",
+  5: "F",
+  6: "Gb",
+  7: "G",
+  8: "Ab",
+  9: "A",
+  10: "Bb",
+  11: "B"
+};
 
 export default Audio = {
   time() { return context.currentTime; },
@@ -54,5 +61,26 @@ export default Audio = {
 
       return t + interval;
     }, this.time());
+  },
+
+  noteToSemitone(note) {
+    var parts;
+    if (parts = note.match(/([A-G])([b#]?)(\d)/)) {
+      const tone = parts[1], accent = parts[2], octive = parseInt(parts[3]);
+      const res = octive * 12 - 9 + TONE_VALUES[tone] + ACCENT_VALUES[accent];
+
+      return res;
+    }
+    
+    return null;
+  },
+
+  semitoneToNote(semitone) {
+    const s = semitone - 3;
+
+    const octive = Math.floor(s / 12) + 1;
+    const tone = (s + 12) % 12;
+
+    return SEMITONE_NOTE[tone] + octive;
   }
 };

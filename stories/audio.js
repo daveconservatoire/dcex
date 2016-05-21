@@ -47,4 +47,26 @@ const SequenceStory = React.createClass({
 storiesOf('Audio', module)
   .add('.playRegularSequence', () => (
     <SequenceStory />
-  ));
+  ))
+  .add('.noteToSemitone', () => {
+    const notes = ["INVALID", "A0", "Bb0", "B0", "C1", "D1"];
+    
+    return (
+      <div>
+        {notes.map(function (n) {
+          return <div key={n}>{n} -> {Audio.noteToSemitone(n)}</div>
+        })}
+      </div>
+    );
+  })
+  .add('.semitoneToNote', () => {
+    const notes = [-1, 0, 1, 2, 3, 4, 5, 10, 20, 30, 50, 99];
+
+    return (
+      <div>
+        {notes.map(function (n) {
+          return <div key={n}>{n} -> {Audio.semitoneToNote(n)}</div>
+        })}
+      </div>
+    );
+  });
