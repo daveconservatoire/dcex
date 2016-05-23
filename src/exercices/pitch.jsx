@@ -124,7 +124,10 @@ export default React.createClass({
         this.playSound(null, newState);
       }
     } else {
-      this.setState({score: 0});
+      if (!this.isCompleted(s.score)) this.setState({score: 0});
+
+      this.setState({solution: null});
+      this.playSound();
     }
   },
 
@@ -152,10 +155,14 @@ export default React.createClass({
                     <div id="exercise-message-container" style={{display: "none"}}>
                       <div className="exercise_message"></div>
                     </div>
-                    <ProgressBar value={s.score} max={s.maxScore}/>
-                    <div className="alert alert-success masterymsg" style={{display: "none"}}>
-                      <strong>Well done!</strong> You've mastered this skill - time to move on to something new!
-                    </div>
+                    {
+                      this.isCompleted(s.score) ?
+                      <div className="alert alert-success masterymsg">
+                        <strong>Well done!</strong> You've mastered this skill - time to move on to something new!
+                      </div>
+                      :
+                      <ProgressBar value={s.score} max={s.maxScore}/>
+                    }
                     <div id="problem-and-answer" className="framework-khan-exercises">
                       <div id="problemarea">
                         <div id="workarea">
