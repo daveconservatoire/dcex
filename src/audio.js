@@ -1,4 +1,4 @@
-import Base64Binary from './base64-binary';
+import {decode} from './base64-binary';
 import piano from '../media/acoustic_grand_piano-mp3';
 import _ from 'lodash';
 
@@ -48,7 +48,7 @@ export function isAvailable() {
 }
 
 function decodeBase64(data) {
-  return context.decodeAudioData(Base64Binary.decode(data.substr(22)).buffer);
+  return context.decodeAudioData(decode(data.substr(22)).buffer);
 }
 
 export function playNoteMidi(note, start) {
