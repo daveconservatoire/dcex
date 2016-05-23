@@ -1,25 +1,7 @@
 import React from 'react';
 import Audio from '../audio.jsx';
-import {RadioState} from '../common.jsx';
+import {RadioState, ProgressBar} from '../common.jsx';
 import _ from 'lodash';
-
-const ProgressBar = React.createClass({
-  propTypes: {
-    value: React.PropTypes.number.isRequired,
-    max: React.PropTypes.number.isRequired
-  },
-
-  render() {
-    const {value, max} = this.props;
-    const pct = value / max * 100;
-
-    return (
-      <div className="progress progress-striped active success" style={{margin: 20}}>
-        <div className="bar" style={{width: pct + "%"}}></div>
-      </div>
-    );
-  }
-});
 
 function rand(min, max) {
   return min + Math.round(Math.random() * (max - min));

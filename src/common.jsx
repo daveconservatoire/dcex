@@ -1,5 +1,23 @@
 import React from 'react';
 
+export const ProgressBar = React.createClass({
+  propTypes: {
+    value: React.PropTypes.number.isRequired,
+    max: React.PropTypes.number.isRequired
+  },
+
+  render() {
+    const {value, max} = this.props;
+    const pct = value / max * 100;
+
+    return (
+      <div className="progress progress-striped active success" style={{margin: 20}}>
+        <div className="bar" style={{width: pct + "%"}}></div>
+      </div>
+    );
+  }
+});
+
 export const RadioState = React.createClass({
   propTypes: {
     name: React.PropTypes.string,

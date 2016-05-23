@@ -1,4 +1,4 @@
-require('./styles.jsx');
+import './styles';
 
 import React from 'react';
 import PitchExercice from './exercices/pitch.jsx'

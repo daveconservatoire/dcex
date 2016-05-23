@@ -1,4 +1,4 @@
-require('../src/styles.jsx');
+import '../src/styles';
 import { configure } from '@kadira/storybook';
 
 function loadStories() {
