@@ -1,5 +1,5 @@
 import React from 'react';
-import {noteToSemitone, semitoneToNote, playRegularSequence} from '../audio.jsx';
+import {noteToSemitone, semitoneToNote, playRegularSequence} from '../audio';
 import {RadioState, ProgressBar} from '../common.jsx';
 import _ from 'lodash';
 
