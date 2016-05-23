@@ -4,7 +4,9 @@ import _ from 'lodash';
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-const context = new AudioContext();
+window.__audioCachedContext = window.__audioCachedContext || new AudioContext();
+
+const context = window.__audioCachedContext;
 
 const TONE_VALUES = {
   "C": 0,
