@@ -1,5 +1,5 @@
 import React from 'react';
-import Audio from '../src/audio.jsx';
+import * as Audio from '../src/audio.jsx';
 import { storiesOf, action } from '@kadira/storybook';
 
 const SequenceStory = React.createClass({

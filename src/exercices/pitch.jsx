@@ -1,5 +1,5 @@
 import React from 'react';
-import Audio from '../audio.jsx';
+import {noteToSemitone, semitoneToNote, playRegularSequence} from '../audio.jsx';
 import {RadioState, ProgressBar} from '../common.jsx';
 import _ from 'lodash';
 
@@ -12,7 +12,7 @@ function randDirection() {
 }
 
 function valueFromDescriptor(descriptor) {
-  const nts = Audio.noteToSemitone;
+  const nts = noteToSemitone;
 
   return _.isArray(descriptor) ?
     rand(nts(descriptor[0]), nts(descriptor[1])) :
@@ -61,10 +61,10 @@ export default React.createClass({
   playSound(e, s) {
     s = s || this.state;
 
-    const note1 = Audio.semitoneToNote(s.pitch);
-    const note2 = Audio.semitoneToNote(s.pitch + s.pitchVariation);
+    const note1 = semitoneToNote(s.pitch);
+    const note2 = semitoneToNote(s.pitch + s.pitchVariation);
 
-    Audio.playRegularSequence([note1, note2], 2);
+    playRegularSequence([note1, note2], 2);
   },
 
   isCompleted(score) {
