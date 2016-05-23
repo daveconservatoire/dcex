@@ -1,5 +1,6 @@
 import React from 'react';
 import Audio from '../audio.jsx';
+import {RadioState} from '../common.jsx';
 import _ from 'lodash';
 
 const ProgressBar = React.createClass({
@@ -20,40 +21,23 @@ const ProgressBar = React.createClass({
   }
 });
 
-function randRange(min, max) {
+function rand(min, max) {
   return min + Math.round(Math.random() * (max - min));
+}
+
+function randDirection() {
+  return Math.random() >= 0.5 ? 1 : -1;
 }
 
 function valueFromDescriptor(descriptor) {
   const nts = Audio.noteToSemitone;
 
   return _.isArray(descriptor) ?
-    randRange(nts(descriptor[0]), nts(descriptor[1])) :
+    rand(nts(descriptor[0]), nts(descriptor[1])) :
     nts(descriptor);
 }
 
 const ValueDescriptor = React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.number]);
-
-const RadioState = React.createClass({
-  propTypes: {
-    name: React.PropTypes.string,
-    value: React.PropTypes.any,
-    target: React.PropTypes.object
-  },
-
-  updateState() {
-    const ns = {};
-    ns[this.props.name] = this.props.value;
-    this.props.target.setState(ns);
-  },
-
-  render() {
-    const p = this.props;
-    const targetValue = p.target.state[p.name];
-
-    return <input type="radio" name={p.name} value={p.value} onChange={this.updateState} checked={targetValue == p.value} />;
-  }
-});
 
 export default React.createClass({
   propTypes: {
@@ -84,7 +68,7 @@ export default React.createClass({
   },
 
   varPitch() {
-    return valueFromDescriptor(this.props.variation) * (Math.random() >= 0.5 ? 1 : -1);
+    return valueFromDescriptor(this.props.variation) * randDirection();
   },
 
   start() {
