@@ -32,7 +32,7 @@ export default {
       score: 0,
       maxScore: 10,
       started: false,
-      solution: null
+      userAnswer: null
     }, this.newRound());
   },
 
@@ -49,11 +49,11 @@ export default {
     const s = this.state;
     const correct = s.rightAnswer;
 
-    if (correct === s.solution) {
+    if (correct === s.userAnswer) {
       const newScore = s.score + 1;
       const newState = _.merge({
         score: newScore,
-        solution: null
+        userAnswer: null
       }, this.newRound());
 
       this.setState(newState);
@@ -64,7 +64,7 @@ export default {
     } else {
       if (!this.isCompleted(s.score)) this.setState({score: 0});
 
-      this.setState({solution: null});
+      this.setState({userAnswer: null});
       this.playSound();
     }
   },
@@ -121,12 +121,12 @@ export default {
                           <form id="answerform" name="answerform">
                             <div className="info-box" id="answercontent">
                               <span className="info-box-header">Answer</span>
-                              <div className="fancy-scrollbar" id="solutionarea">
+                              <div className="fancy-scrollbar">
                                 <ul>
                                   {_.map(s.answerOptions, (opt) => {
                                     return (
                                       <li>
-                                        <label><RadioState name="solution" value={opt[1]} target={this} /> <span className="value">{opt[0]}</span></label>
+                                        <label><RadioState name="userAnswer" value={opt[1]} target={this} /> <span className="value">{opt[0]}</span></label>
                                       </li>
                                     );
                                   })}
