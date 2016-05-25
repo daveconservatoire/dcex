@@ -43,7 +43,7 @@ export default React.createClass({
 
   intervalsOptions() {
     return _.map(this.props.intervals, (i) => {
-      return [INTERVALS[i], i]
+      return [INTERVALS[i], i];
     });
   },
 
