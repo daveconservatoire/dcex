@@ -7,8 +7,12 @@ export function rangedRand(min, max) {
   return min + Math.round(Math.random() * (max - min));
 }
 
+export function randBoolean() {
+  return Math.random() >= 0.5;
+}
+
 export function randDirection() {
-  return Math.random() >= 0.5 ? 1 : -1;
+  return randBoolean() ? 1 : -1;
 }
 
 export function valueFromDescriptor(descriptor) {
@@ -25,6 +29,14 @@ export function valueFromDescriptor(descriptor) {
 }
 
 export const ValueDescriptor = React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.number]);
+
+function call(target, method, args) {
+  const fn = target.props[method];
+
+  if (!fn) return;
+
+  fn.apply(target, args);
+}
 
 export default {
   getInitialState() {
@@ -61,6 +73,8 @@ export default {
       if (newScore != s.maxScore) {
         this.playSound(null, newState);
       }
+
+      call(this, 'onSuccess', [newScore]);
     } else {
       if (!this.isCompleted(s.score)) this.setState({score: 0});
 

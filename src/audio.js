@@ -51,7 +51,8 @@ function decodeBase64(data) {
   return context.decodeAudioData(decode(data.substr(22)).buffer);
 }
 
-export function playNoteMidi(note, start) {
+export function playNoteMidi(note, t) {
+  note = semitoneToNote(note);
   const noteData = piano[note];
 
   if (!noteData) {
@@ -69,7 +70,13 @@ export function playNoteMidi(note, start) {
     sourceNode.connect(gainNode);
     gainNode.connect(context.destination);
 
-    sourceNode.start(start);
+    sourceNode.start(t);
+  });
+}
+
+export function playChord(notes, t) {
+  _.each(notes, function (note) {
+    playNoteMidi(note, t);
   });
 }
 
@@ -77,7 +84,11 @@ export function playRegularSequence(notes, interval) {
   const t = time();
 
   _.reduce(notes, (t, note) => {
-    playNoteMidi(semitoneToNote(note), t);
+    if (_.isArray(note)) {
+      playChord(note, t);
+    } else {
+      playNoteMidi(note, t);
+    }
 
     return t + interval;
   }, time());
