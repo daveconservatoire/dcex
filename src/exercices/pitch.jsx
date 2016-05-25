@@ -118,9 +118,6 @@ export default React.createClass({
               <div className="current-card-container card-type-problem">
                 <div className="current-card-container-inner vertical-shadow">
                   <div className="current-card-contents">
-                    <div id="exercise-message-container" style={{display: "none"}}>
-                      <div className="exercise_message"></div>
-                    </div>
                     {
                       this.isCompleted(s.score) ?
                       <div className="alert alert-success masterymsg">
