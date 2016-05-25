@@ -77,7 +77,7 @@ export function playRegularSequence(notes, interval) {
   const t = time();
 
   _.reduce(notes, (t, note) => {
-    playNoteMidi(note, t);
+    playNoteMidi(semitoneToNote(note), t);
 
     return t + interval;
   }, time());
@@ -97,6 +97,8 @@ export function noteToSemitone(note) {
 }
 
 export function semitoneToNote(semitone) {
+  if (_.isString(semitone)) return semitone;
+  
   const s = semitone - 3;
 
   const octive = Math.floor(s / 12) + 1;
