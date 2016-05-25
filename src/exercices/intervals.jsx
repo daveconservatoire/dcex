@@ -1,6 +1,5 @@
 import React from 'react';
-import {noteToSemitone} from '../audio';
-import Questionare, {randDirection, valueFromDescriptor, ValueDescriptor} from './sound-questionare.jsx';
+import Questionare, {valueFromDescriptor, ValueDescriptor} from './sound-questionare.jsx';
 import _ from 'lodash';
 
 const INTERVALS = {
