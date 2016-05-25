@@ -4,8 +4,18 @@ import Questionare, {randBoolean, valueFromDescriptor, ValueDescriptor} from './
 export default React.createClass({
   mixins: [Questionare],
 
+  propTypes: {
+    base: ValueDescriptor
+  },
+
+  getDefaultProps() {
+    return {
+      base: ["C4", "..", "B5"]
+    };
+  },
+
   newRound() {
-    const baseNote = valueFromDescriptor(["C4", "..", "B5"]);
+    const baseNote = valueFromDescriptor(this.props.base);
     const isMajor = randBoolean();
     const third = isMajor ? 4 : 3;
     const chord = [baseNote, baseNote + third, baseNote + 7];
