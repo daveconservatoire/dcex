@@ -24,15 +24,15 @@ export default React.createClass({
   getDefaultProps() {
     return {
       intervals: [12, 7, 4, 5, 9, 2, 11],
-      base: "C4"
+      base: ["C3", "C4", "C5"]
     };
   },
 
   newRound() {
-    const base = this.props.base;
+    const base = valueFromDescriptor(this.props.base);
     const interval = _.sample(this.props.intervals);
 
-    const notes = [base, noteToSemitone(base) + interval];
+    const notes = [base, base + interval];
 
     return {
       description: "You will hear two notes - what is their interval?",

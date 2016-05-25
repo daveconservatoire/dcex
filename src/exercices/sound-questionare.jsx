@@ -1,5 +1,5 @@
 import React from 'react';
-import {noteToSemitone, semitoneToNote, playRegularSequence} from '../audio';
+import {noteToSemitone, playRegularSequence} from '../audio';
 import {RadioState, ProgressBar} from '../common.jsx';
 import _ from 'lodash';
 
@@ -13,10 +13,15 @@ export function randDirection() {
 
 export function valueFromDescriptor(descriptor) {
   const nts = noteToSemitone;
-
-  return _.isArray(descriptor) ?
-    rangedRand(nts(descriptor[0]), nts(descriptor[1])) :
-    nts(descriptor);
+  
+  if (_.isArray(descriptor)) {
+    if (descriptor.length == 3 && descriptor[1] == "..")
+      return rangedRand(nts(descriptor[0]), nts(descriptor[2]));
+    else
+      return nts(_.sample(descriptor));
+  } else {
+    return nts(descriptor);
+  }
 }
 
 export const ValueDescriptor = React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.number]);

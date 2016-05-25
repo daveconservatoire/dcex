@@ -11,7 +11,7 @@ export default React.createClass({
 
   getDefaultProps() {
     return {
-      pitch: ["C3", "B5"],
+      pitch: ["C3", "..", "B5"],
       variation: 24
     };
   },

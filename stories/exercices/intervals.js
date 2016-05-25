@@ -20,4 +20,7 @@ storiesOf('IntervalsEx', module)
   ))
   .add('Major 7th', () => (
     <IntervalsEx intervals={[12, 7, 4, 5, 9, 2, 11]} />
+  ))
+  .add('Multiple Notes', () => (
+    <IntervalsEx intervals={[12, 7, 4, 5, 9, 2, 11]} base={["C2", "..", "B5"]} />
   ));
