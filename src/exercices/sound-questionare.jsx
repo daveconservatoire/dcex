@@ -1,6 +1,6 @@
 import React from 'react';
-import {noteToSemitone, playRegularSequence} from '../audio';
-import {RadioState, ProgressBar} from '../common.jsx';
+import {noteToSemitone, playRegularSequence, stopAll} from '../audio';
+import {RadioState, ProgressBar, KeyHandler} from '../common.jsx';
 import _ from 'lodash';
 
 export function rangedRand(min, max) {
@@ -28,7 +28,9 @@ export function valueFromDescriptor(descriptor) {
   }
 }
 
-export const ValueDescriptor = React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.number]);
+export const ValueDescriptor = React.PropTypes.oneOfType([
+  React.PropTypes.array, React.PropTypes.number, React.PropTypes.string
+]);
 
 function call(target, method, args) {
   const fn = target.props[method];
@@ -59,24 +61,26 @@ export default {
 
   checkAnswer() {
     const s = this.state;
-    const correct = s.rightAnswer;
 
-    if (correct === s.userAnswer) {
+    if (s.rightAnswer === s.userAnswer) {
       const newScore = s.score + 1;
       const newState = _.merge({
         score: newScore,
         userAnswer: null
       }, this.newRound());
 
-      this.setState(newState);
-
       if (newScore != s.maxScore) {
         this.playSound(null, newState);
       }
 
+      if (newScore == (s.maxScore + 1)) {
+        newState.maxScore = s.maxScore * 10;
+      }
+
+      this.setState(newState);
       call(this, 'onSuccess', [newScore]);
     } else {
-      if (!this.isCompleted(s.score)) this.setState({score: 0});
+      this.setState({score: 0});
 
       this.setState({userAnswer: null});
       this.playSound();
@@ -85,6 +89,8 @@ export default {
 
   playSound(e, s) {
     s = s || this.state;
+    
+    stopAll();
 
     playRegularSequence(s.notes, 2);
   },
@@ -98,11 +104,27 @@ export default {
     };
   },
 
+  handleKey(e) {
+    const k = e.keyCode - 49;
+    const options = this.state.answerOptions;
+
+    if (k == -1) {
+      this.playSound();
+    }
+
+    if (k >= 0 && k < Math.min(options.length, 10)) {
+      this.setState({userAnswer: options[k][1]}, () => {
+        this.checkAnswer();
+      });
+    }
+  },
+
   renderExercice() {
     const s = this.state;
 
     return (
-      <div className="single-exercise visited-no-recolor" id="container" style={{overflow: "hidden", visibility: "visible"}}>
+      <div className="single-exercise visited-no-recolor" style={{overflow: "hidden", visibility: "visible"}}>
+        <KeyHandler onKeyHandler={this.handleKey} />
         <article className="exercises-content clearfix">
           <div className="exercises-body">
             <div className="exercises-stack">&nbsp;</div>
@@ -137,10 +159,13 @@ export default {
                               <span className="info-box-header">Answer</span>
                               <div className="fancy-scrollbar">
                                 <ul>
-                                  {_.map(s.answerOptions, (opt) => {
+                                  {_.map(s.answerOptions, (opt, i) => {
                                     return (
-                                      <li>
-                                        <label><RadioState name="userAnswer" value={opt[1]} target={this} /> <span className="value">{opt[0]}</span></label>
+                                      <li key={i}>
+                                        <label>
+                                          <RadioState name="userAnswer" value={opt[1]} target={this} />
+                                          <span className="value">{opt[0]} [{i + 1}]</span>
+                                        </label>
                                       </li>
                                     );
                                   })}

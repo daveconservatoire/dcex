@@ -38,3 +38,25 @@ export const RadioState = React.createClass({
     return <input type="radio" name={p.name} value={p.value} onChange={this.updateState} checked={targetValue == p.value} />;
   }
 });
+
+export const KeyHandler = React.createClass({
+  propTypes: {
+    onKeyHandler: React.PropTypes.func.isRequired
+  },
+
+  handleKey(e) {
+    this.props.onKeyHandler(e);
+  },
+
+  componentDidMount() {
+    document.body.addEventListener("keypress", this.handleKey);
+  },
+
+  componentWillUnmount() {
+    document.body.removeEventListener("keypress", this.handleKey);
+  },
+
+  render() {
+    return <noscript />
+  }
+});
