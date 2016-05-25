@@ -51,6 +51,9 @@ function decodeBase64(data) {
   return context.decodeAudioData(decode(data.substr(22)).buffer);
 }
 
+const runningSounds = {};
+var runningCounter = 0;
+
 export function playNoteMidi(note, t) {
   note = semitoneToNote(note);
   const noteData = piano[note];
@@ -60,7 +63,7 @@ export function playNoteMidi(note, t) {
     return;
   }
 
-  decodeBase64(noteData).then(function (buffer) {
+  return decodeBase64(noteData).then(function (buffer) {
     const gainNode = context.createGain();
     gainNode.gain.value = 2;
 
@@ -70,22 +73,36 @@ export function playNoteMidi(note, t) {
     sourceNode.connect(gainNode);
     gainNode.connect(context.destination);
 
+    const idx = ++runningCounter;
+
+    sourceNode.onended = function() {
+      delete runningSounds[idx];
+    };
+
     sourceNode.start(t);
+
+    runningSounds[idx] = sourceNode;
+
+    return sourceNode;
   });
 }
 
-export function playChord(notes, t) {
-  _.each(notes, function (note) {
-    playNoteMidi(note, t);
+export function stopAll() {
+  _.each(runningSounds, function (node) {
+    node.stop();
+  });
+}
+
+export function playNotes(notes, t) {
+  _.map(notes, function (note) {
+    return playNoteMidi(note, t);
   });
 }
 
 export function playRegularSequence(notes, interval) {
-  const t = time();
-
   _.reduce(notes, (t, note) => {
     if (_.isArray(note)) {
-      playChord(note, t);
+      playNotes(note, t);
     } else {
       playNoteMidi(note, t);
     }
